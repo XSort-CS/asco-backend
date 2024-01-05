@@ -17,11 +17,10 @@ class User:
         self.score += n
 
 class Challenge:
-    def __init__(self, cname, desc, answer, value):
+    def __init__(self, cname, desc, answer):
         self.cname = cname
         self.desc = desc
         self.answer = answer
-        self.value = value
 
 @app.route('/admin/submit_challenge', methods=['POST'])
 def submit_challenge():
@@ -47,14 +46,14 @@ def register():
     return True
 
 
-@app.route('/submit', methods=['POST']) # not working
+@app.route('/submit', methods=['POST']) # sus
 def validate():
     cname = request.json['cname'] # challenge name/id
     submitted_ans = request.json['submit'].lower # submitted answer from user
     username = request.json['username']
 
     if submitted_ans == challenges[cname].answer:
-        users[username].add_score(challenges[cname].value)
+        users[username].add_score(1) # add a point
         return True
     return False
         
