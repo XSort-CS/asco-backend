@@ -16,18 +16,18 @@
         <li>{{ user }}</li>
         {% endfor %}
         </ul>
-        
+
     <p>Challenges:</p>
         <ul>
             {% for chal in challenges %}
             <li>
-                <p>Name: {{ getattr(chal, 'cname') }}</p>
-                <p>Description: {{ getattr(chal, 'desc') }}</p>
-                <p>Answer: {{ getattr(chal, 'answer') }}</p>
+                <p>Name: {{ chal['cname'] }}</p>
+                <p>Description: {{ chal['desc'] }}</p>
+                <p>Answer: {{ chal['answer'] }}</p>
             </li>
             {% endfor %}
         </ul>
-    
+
         
     
     <h1>Submit challenge: </h1>
