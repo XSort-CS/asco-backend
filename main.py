@@ -60,7 +60,7 @@ def validate():
         
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_panel():
-    return render_template('admin.html')
+    return render_template('admin.html', users = users, challenges = challenges)
 
 @app.route('/', methods=['GET'])
 def homepage():
