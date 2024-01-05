@@ -19,9 +19,14 @@
     <p>Challenges:</p>
         <ul>
             {% for chal in challenges %}
-            <li>{{ chal }}</li>
+            <li>
+                <p>Name: {{ chal.cname }}</p>
+                <p>Description: {{ chal.desc }}</p>
+                <p>Answer: {{ chal.answer }}</p>
+            </li>
             {% endfor %}
-            </ul>
+        </ul>
+    
     <h1>Submit challenge: </h1>
     <form id="myForm" action="{{ url_for('submit_challenge') }}" method="POST">
         <p>Auth: <textarea name="auth" rows="2" cols="20"></textarea></p>
