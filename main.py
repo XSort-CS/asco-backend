@@ -24,7 +24,7 @@ class Challenge:
         self.value = value
 
 @app.route('/admin/submit_challenge', methods=['POST'])
-def add_challenge(auth, cname, desc, answer):
+def submit_challenge(auth, cname, desc, answer):
     auth = request.json['auth']
     if auth != "53CUR3_P455W0RD": # lol
         return False
