@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        textarea {
+            resize: both;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>hello admin</h1>
+    <p>Users: { { users.keys() }}</p>
+    <p>Challenges: { { challenges }}</p>
+    <form action="{ { url_for('submit_challenge', _external=True) }}" method="POST">
+        <p>Auth: <textarea name="auth" rows="2" cols="20"></textarea></p>
+        <p>Cname: <textarea name="cname" rows="2" cols="20"></textarea></p>
+        <p>Desc: <textarea name="desc" rows="5" cols="50"></textarea></p>
+        <p>Answer: <textarea name="answer" rows="5" cols="50"></textarea></p>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

@@ -23,8 +23,18 @@ class Challenge:
         self.answer = answer
         self.value = value
 
-def add_challenge(cname, desc, answer):
+@app.route('/admin/submit_challenge', methods=['POST'])
+def add_challenge(auth, cname, desc, answer):
+    auth = request.json['auth']
+    if auth != "53CUR3_P455W0RD":
+        return False
+
+    cname = request.json['cname']
+    desc = request.json['desc']
+    answer = request.json['answer']
+    
     challenges[cname] = Challenge(cname, desc, answer)
+    return True
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -48,9 +58,13 @@ def validate():
         return True
     return False
         
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_panel():
+    return render_template('admin.html')
+
 @app.route('/', methods=['GET'])
 def homepage():
-    return f"hello world :)\n\n\n{users}\n\n\n\n{challenges}"
+    return f"hello world :)"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5001')
