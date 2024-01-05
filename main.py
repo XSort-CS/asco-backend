@@ -1,27 +1,19 @@
 import os
 
-from flask import Flask
+from flask import Flask, request, jsonify
+app = Flask(__name__)
 
+# make key dict like this (from json?)
+key = {'challenge id': 'answer'}
 
-def create_app(test_config=None):
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
-    )
+@app.route('/api/submit', methods=['POST'])
+def validate():
+    id = request.json['challenge'] # challenge name/id
+    submit = request.json['submit'] # submitted answer from user
 
-    if test_config is None:
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        app.config.from_mapping(test_config)
+    submit = submit.lower
 
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+    return submit == key[id]
 
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
-    return app
+if __name__ == '__main__':
+    app.run(debug=True)
