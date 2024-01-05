@@ -23,7 +23,7 @@
             {% endfor %}
             </ul>
     <h1>Submit challenge: </h1>
-    <form action="{ { url_for('/admin/submit_challenge', _external=True) }}" method="POST">
+    <form action="{{ url_for('/admin/submit_challenge', _external=True) }}" method="POST">
         <p>Auth: <textarea name="auth" rows="2" cols="20"></textarea></p>
         <p>Cname: <textarea name="cname" rows="2" cols="20"></textarea></p>
         <p>Desc: <textarea name="desc" rows="5" cols="50"></textarea></p>
