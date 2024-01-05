@@ -21,9 +21,9 @@
         <ul>
             {% for chal in challenges %}
             <li>
-                <p>Name: {{ chal['cname'] }}</p>
-                <p>Description: {{ chal['desc'] }}</p>
-                <p>Answer: {{ chal['answer'] }}</p>
+                <p>Name: {{ chal }}</p>
+                <p>Description: {{ chal|attr('desc') }}</p>
+                <p>Answer: {{ chal|attr('answer') }}</p>
             </li>
             {% endfor %}
         </ul>
