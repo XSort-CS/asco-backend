@@ -50,7 +50,7 @@ def validate():
         
 @app.route('/', methods=['GET'])
 def homepage():
-    return "hello world :)"
+    return "hello world :)\n\n\n{users}\n\n\n\n{challenges}"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5001')
