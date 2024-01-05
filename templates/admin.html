@@ -10,8 +10,14 @@
 </head>
 <body>
     <h1>hello admin</h1>
-    <p>Users: { { users.keys() }}</p>
+    <p>Users:</p>
+        <ul>
+        {% for user in users.keys() %}
+        <li>{ { user }}</li>
+        {% endfor %}
+        </ul>
     <p>Challenges: { { challenges }}</p>
+    <h1>Submit challenge: </h1>
     <form action="{ { url_for('submit_challenge', _external=True) }}" method="POST">
         <p>Auth: <textarea name="auth" rows="2" cols="20"></textarea></p>
         <p>Cname: <textarea name="cname" rows="2" cols="20"></textarea></p>
