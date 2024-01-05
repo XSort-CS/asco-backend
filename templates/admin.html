@@ -23,12 +23,49 @@
             {% endfor %}
             </ul>
     <h1>Submit challenge: </h1>
-    <form action="{{ url_for('submit_challenge') }}" method="POST">
+    <form id="myForm" action="{{ url_for('submit_challenge') }}" method="POST">
         <p>Auth: <textarea name="auth" rows="2" cols="20"></textarea></p>
         <p>Cname: <textarea name="cname" rows="2" cols="20"></textarea></p>
         <p>Desc: <textarea name="desc" rows="5" cols="50"></textarea></p>
         <p>Answer: <textarea name="answer" rows="5" cols="50"></textarea></p>
         <input type="submit" value="Submit">
     </form>
+    <script>
+        // Get the form element
+        var form = document.getElementById("myForm");
+
+        // Add a submit event listener to the form
+        form.addEventListener("submit", function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Create a FormData object from the form
+            var formData = new FormData(form);
+
+            // Create a JSON object from the FormData object
+            var jsonObject = {};
+            for (const [key, value]  of formData.entries()) {
+                jsonObject[key] = value;
+            }
+
+            // Send the JSON object to the server using fetch
+            fetch(form.action, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonObject)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle the error
+                console.error(error);
+            });
+        });
+    </script>
 </body>
 </html>
