@@ -27,7 +27,9 @@ def add_challenge(cname, desc, answer):
     challenges[cname] = Challenge(cname, desc, answer)
 
 @app.route('/register', methods=['POST'])
-def register(username, pwd):
+def register():
+    username = request.json['username']
+    pwd = request.json['password']
     if username in users:
         return False
     
