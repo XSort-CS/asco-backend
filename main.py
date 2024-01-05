@@ -46,7 +46,9 @@ def validate():
         return True
     return False
         
-
+@app.route('/', methods=['GET'])
+def homepage():
+    return "hello world :)"
 
 if __name__ == '__main__':
     app.run(debug=True)
