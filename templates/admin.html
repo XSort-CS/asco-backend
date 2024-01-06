@@ -6,13 +6,15 @@
             resize: both;
             overflow: auto;
         }
+        body {
+            display: none;
+        }
     </style>
     <script>
-        // Prompt for password on page load
+        // JavaScript code for password prompt and body display
         window.onload = function() {
             var password = prompt("Enter the admin password:");
 
-            // Send the password to the server for verification
             fetch('/admin/login', {
                 method: 'POST',
                 headers: {
@@ -22,7 +24,11 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (!data.status) {
+                if (data.status) {
+                    // Authentication successful
+                    document.body.style.display = 'block';
+                } else {
+                    // Authentication failed
                     alert('Incorrect password. Access denied.');
                     window.location.href = '/'; // Redirect to homepage or another page
                 }
