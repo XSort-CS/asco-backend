@@ -20,7 +20,7 @@ class User:
             self.c_points[challenge]=0
 
     def add_score(self, challenge, n):
-        self.c_points[challenge]=n
+        self.c_points[challenge] = n
         self.score += n
 
 class Challenge:
