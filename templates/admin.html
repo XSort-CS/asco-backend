@@ -19,14 +19,15 @@
 
     <p>Challenges:</p>
         <ul>
-            {% for chal in challenges %}
+            {% for chal in challenges.values() %}
             <li>
-                <p>Name: {{ chal }}</p>
-                <p>Description: {{ chal|attr('desc') }}</p>
-                <p>Answer: {{ chal|attr('answer') }}</p>
+                <p>Name: {{ chal.cname }}</p>
+                <p>Description: {{ chal.desc }}</p>
+                <p>Answer: {{ chal.answer }}</p>
             </li>
             {% endfor %}
         </ul>
+        
 
         
     
