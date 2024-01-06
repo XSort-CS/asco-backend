@@ -12,8 +12,12 @@ class User:
         self.username = username
         self.password = pwd
         self.score = 0
+        self.c_points={}
+        for challenge in challenges:
+            self.c_points[challenge]=0
 
-    def add_score(n):
+    def add_score(self, challenge, n):
+        self.c_points[challenge]=n
         self.score += n
 
 class Challenge:
@@ -51,11 +55,17 @@ def validate():
     cname = request.json['cname'] # challenge name/id
     submitted_ans = request.json['submit'].lower # submitted answer from user
     username = request.json['username']
-
+    points=request.json['points']
     if submitted_ans == challenges[cname].answer:
-        users[username].add_score(1) # add a point
-        return True
-    return False
+        users[username].add_score(points) # add a point
+        return {"status": True}
+    return {"status": False}
+@app.route('/completion', methods=['GET']) # sus
+def completion():
+    cname = request.json['cname'] # challenge name/id
+   # submitted answer from user
+    username = request.json['username']
+    return {"status": users[username].c_points[cname]!=0}
         
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_panel():
