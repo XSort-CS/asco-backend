@@ -39,7 +39,7 @@ def submit_challenge():
     desc = request.json['desc']
     answer = request.json['answer']
     
-    challenges[cname] = Challenge(cname.strip, desc.strip, answer.strip)
+    challenges[cname] = Challenge(cname.strip(), desc.strip(), answer.strip())
     return {"status": True}, 201
     
 @app.route('/register', methods=['POST'])
@@ -59,7 +59,7 @@ def validate():
     submitted_ans = request.json['submit'].lower # submitted answer from user
     username = request.json['username']
     points=request.json['points']
-    if submitted_ans.strip == challenges[cname].answer:
+    if submitted_ans.strip() == challenges[cname].answer:
         users[username].add_score(points) # add a point
         return {"status": True}
     return {"status": False}
