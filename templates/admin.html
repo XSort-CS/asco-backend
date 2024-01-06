@@ -7,6 +7,31 @@
             overflow: auto;
         }
     </style>
+    <script>
+        // Prompt for password on page load
+        window.onload = function() {
+            var password = prompt("Enter the admin password:");
+
+            // Send the password to the server for verification
+            fetch('/admin/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password: password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.status) {
+                    alert('Incorrect password. Access denied.');
+                    window.location.href = '/'; // Redirect to homepage or another page
+                }
+            })
+            .catch(error => {
+                console.error('Error during password verification:', error);
+            });
+        };
+    </script>
 </head>
 <body>
     <h1>hello admin</h1>

@@ -9,6 +9,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+AUTH = "53CUR3_P455W0RD"
 
 # json soonTM
 challenges = {}
@@ -36,7 +37,7 @@ class Challenge:
 @app.route('/admin/submit_challenge', methods=['POST'])
 def submit_challenge():
     auth = request.json['auth']
-    if auth != "53CUR3_P455W0RD": # lol
+    if auth != AUTH: # lol
         return {"status": False}
 
     cname = request.json['cname']
@@ -81,7 +82,19 @@ def admin_panel():
     for cname in challenges.keys():
         challenge = challenges[cname]
         cdisplay.append( (challenge.cname, challenge.desc, challenge.answer) )
-    return render_template('admin.html', users = users, cdisplay = cdisplay)
+    return render_template('admin.html', users = users, cdisplay = cdisplay, password_required=True)
+
+@app.route('/admin/login', methods=['POST'])
+def admin_login():
+    auth_password = AUTH
+    password_attempt = request.json.get('password')
+
+    # Check if the password is correct
+    if password_attempt == auth_password:
+        return {"status": True}
+    else:
+        return {"status": False}
+
 
 @app.route('/', methods=['GET'])
 def homepage():
