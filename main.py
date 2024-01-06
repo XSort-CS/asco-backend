@@ -64,7 +64,7 @@ def validate():
         return {"status": True}
     return {"status": False}
     
-@app.route('/completion', methods=['GET']) # sus
+@app.route('/completion', methods=['POST']) # sus
 def completion():
     cname = request.json['cname'] # challenge name/id
    # submitted answer from user
