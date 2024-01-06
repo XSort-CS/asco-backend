@@ -1,4 +1,8 @@
 import os
+import subprocess
+import sys
+
+# subprocess.call([sys.executable, '-m', 'pip', 'install', "flask-CORS"])
 
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
@@ -73,7 +77,11 @@ def completion():
         
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_panel():
-    return render_template('admin.html', users = users, challenges = challenges)
+    cdisplay = []
+    for cname in challenges.keys():
+        challenge = challenges[cname]
+        cdisplay.append( (challenge.cname, challenge.desc, challenge.answer) )
+    return render_template('admin.html', users = users, cdisplay = cdisplay)
 
 @app.route('/', methods=['GET'])
 def homepage():
