@@ -56,7 +56,7 @@ def register():
 @app.route('/submit', methods=['POST']) # sus
 def validate():
     cname = request.json['cname'] # challenge name/id
-    submitted_ans = request.json['submit'].lower # submitted answer from user
+    submitted_ans = request.json['submit'].lower() # submitted answer from user
     username = request.json['username']
     points=request.json['points']
     if submitted_ans.strip() == challenges[cname].answer:
