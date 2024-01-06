@@ -21,9 +21,9 @@
         <ul>
             {% for chal in challenges.values() %}
             <li>
-                <p>Name: {{ chal.cname }}</p>
-                <p>Description: {{ chal.desc }}</p>
-                <p>Answer: {{ chal.answer }}</p>
+                <p>Name: {{ chal['cname'] }}</p>
+                <p>Description: {{ chal['desc'] }}</p>
+                <p>Answer: {{ chal['answer'] }}</p>
             </li>
             {% endfor %}
         </ul>
