@@ -13,7 +13,7 @@ class User:
         self.password = pwd
         self.score = 0
 
-    def add_score(n):
+    def add_score(self, n):
         self.score += n
 
 class Challenge:
