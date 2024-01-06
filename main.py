@@ -60,7 +60,7 @@ def validate():
     username = request.json['username']
     points=request.json['points']
     if submitted_ans.strip() == challenges[cname].answer:
-        users[username].add_score(points) # add a point
+        users[username].add_score(cname, points) # add a point
         return {"status": True}
     return {"status": False}
     
