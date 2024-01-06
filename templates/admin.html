@@ -42,13 +42,17 @@
         {% endfor %}
         </ul>
 
-    <p>Challenges:</p>
-        <p>{{ cdisplay }}</p>
+    <p>Challenges: (cname, data, answer)</p>
+        <ul>
+            {% for i in cdisplay %}
+            <li>{{ i }}</li>
+            {% endfor %}
+        </ul>
         
 
         
     
-    <h1>Submit challenge: </h1>
+    <h1>Create/edit challenge: </h1>
     <form id="myForm" action="{{ url_for('submit_challenge') }}" method="POST">
         <p>Auth: <textarea name="auth" rows="2" cols="20"></textarea></p>
         <p>Cname: <textarea name="cname" rows="2" cols="20"></textarea></p>
@@ -93,5 +97,41 @@
             });
         });
     </script>
+
+    <h1>Delete challenge</h1>
+    <form id="deleteChallengeForm" action="{{ url_for('delete_challenge') }}" method="POST">
+        <p>Auth: <input type="password" name="auth"></p>
+        <p>Cname to delete: <input type="text" name="cname"></p>
+        <input type="submit" value="Delete Challenge">
+    </form>
+
+    <script>
+        var deleteChallengeForm = document.getElementById("deleteChallengeForm");
+
+        deleteChallengeForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(deleteChallengeForm);
+
+            fetch(deleteChallengeForm.action, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data
+                console.log(data);
+                alert(data.message);
+            })
+            .catch(error => {
+                // Handle the error
+                console.error(error);
+            });
+        });
+    </script>
+
 </body>
 </html>

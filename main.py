@@ -47,6 +47,21 @@ def submit_challenge():
     challenges[cname] = Challenge(cname.strip(), desc.strip(), answer.strip())
     return {"status": True}, 201
     
+@app.route('/admin/delete_challenge', methods=['POST'])
+def delete_challenge():
+    auth = request.json.get('auth')
+    
+    if auth != "53CUR3_P455W0RD":
+        return {"status": False, "message": "Authentication failed."}
+
+    cname_to_delete = request.json.get('cname')
+
+    if cname_to_delete in challenges:
+        del challenges[cname_to_delete]
+        return {"status": True, "message": f"Challenge '{cname_to_delete}' deleted successfully."}
+    else:
+        return {"status": False, "message": f"Challenge '{cname_to_delete}' not found."}
+    
 @app.route('/register', methods=['POST'])
 def register():
     username = request.json['username']
