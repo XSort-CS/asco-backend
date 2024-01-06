@@ -30,24 +30,24 @@ class Challenge:
 def submit_challenge():
     auth = request.json['auth']
     if auth != "53CUR3_P455W0RD": # lol
-        return Flask.jsonify({"status": False})
+        return {"status": False}
 
     cname = request.json['cname']
     desc = request.json['desc']
     answer = request.json['answer']
     
     challenges[cname] = Challenge(cname, desc, answer)
-    return Flask.jsonify({"status": True})
-
+    return {"status": True}, 201
+    
 @app.route('/register', methods=['POST'])
 def register():
     username = request.json['username']
     pwd = request.json['password']
     if username in users:
-        return Flask.jsonify({"status": False})
+        return {"status": False}
     
     users[username] = User(username, pwd)
-    return Flask.jsonify({"status": True})
+    return {"status": True}, 201
 
 
 @app.route('/submit', methods=['POST']) # sus
@@ -60,6 +60,7 @@ def validate():
         users[username].add_score(points) # add a point
         return {"status": True}
     return {"status": False}
+    
 @app.route('/completion', methods=['GET']) # sus
 def completion():
     cname = request.json['cname'] # challenge name/id
@@ -73,7 +74,7 @@ def admin_panel():
 
 @app.route('/', methods=['GET'])
 def homepage():
-    return Flask.jsonify({"status": True})
+    return {"status": True}, 201
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5001')
