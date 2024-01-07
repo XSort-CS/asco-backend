@@ -28,6 +28,11 @@ class User:
         self.c_points[challenge] = n
         self.score += n
 
+    def init_cpoints(self):
+        for challenge in challenges:
+            if not challenge in self.c_points.keys():
+                self.c_points[challenge]=0
+
 class Challenge:
     def __init__(self, cname, desc, answer):
         self.cname = cname
@@ -51,7 +56,7 @@ def submit_challenge():
 def delete_challenge():
     auth = request.json.get('auth')
     
-    if auth != "53CUR3_P455W0RD":
+    if auth != AUTH:
         return {"status": False, "message": "Authentication failed."}
 
     cname_to_delete = request.json.get('cname')
@@ -61,16 +66,40 @@ def delete_challenge():
         return {"status": True, "message": f"Challenge '{cname_to_delete}' deleted successfully."}
     else:
         return {"status": False, "message": f"Challenge '{cname_to_delete}' not found."}
+
+@app.route('/admin/update_users', methods=['POST']) # fixes all users' cpoints data (run when adding a new challenge)
+def update_users():
+    auth = request.json.get('auth')
+
+    if auth != AUTH:
+        return {"status": False, "message": "Authentication failed."}
+
+    for username in users:
+        user = users[username]
+        user.init_cpoints()
     
+    return {"status": True, "message": "Updated user cpoints dict"}
+
+@app.route('/admin/del_user', methods=['POST'])
+def del_user():
+    auth = request.json.get('auth')
+    if auth != AUTH:
+        return {"status": False, "message": "Authentication failed."}
+    
+    user = request.json.get('username')
+    value = users.pop(user)
+    return {"message": value}
+
 @app.route('/register', methods=['POST'])
 def register():
     username = request.json['username']
     pwd = request.json['password']
     if username in users:
-        return {"status": False}
+        return {"status": False, "message": "Username taken."}
     
     users[username] = User(username, pwd)
-    return {"status": True}, 201
+    update_users()
+    return {"status": True, "message": f"User {username} registered successfully."}, 201
 
 
 @app.route('/submit', methods=['POST']) # sus
@@ -97,7 +126,13 @@ def admin_panel():
     for cname in challenges.keys():
         challenge = challenges[cname]
         cdisplay.append( (challenge.cname, challenge.desc, challenge.answer) )
-    return render_template('admin.html', users = users, cdisplay = cdisplay, password_required=True)
+
+    udisplay = []
+    for username in users:
+        user = users[username]
+        udisplay.append( (user.username, f"Total score: {user.score}", f"Data: {user.c_points}") )
+
+    return render_template('admin.html', users = udisplay, cdisplay = cdisplay, password_required=True)
 
 @app.route('/admin/login', methods=['POST'])
 def admin_login():
