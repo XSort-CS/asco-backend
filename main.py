@@ -16,10 +16,10 @@ with open('users.json') as f:
     users = json.loads(f)
 
 def saveData():
-    with open('challenges.json') as f:
-        ""
-    with open('users.json') as f:
-        ""
+    with open('challenges.json', 'w') as f:
+        json.dumps(challenges, f)
+    with open('users.json', 'w') as f:
+        json.dumps(users, f)
 
 class User:
     def __init__(self, username, pwd):
@@ -157,4 +157,6 @@ def homepage():
     return {"status": True}, 201
 
 if __name__ == '__main__':
+    scheduler.add_job(func=saveData, trigger="interval", id="save_dicts_job", minutes=5)
+    scheduler.start()
     app.run(host='0.0.0.0', port='5001', ssl_context='adhoc')
