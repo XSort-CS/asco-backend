@@ -15,7 +15,11 @@ with open('challenges.json') as f:
 with open('users.json') as f:
     users = json.loads(f)
 
-def saveData()
+def saveData():
+    with open('challenges.json') as f:
+        ""
+    with open('users.json') as f:
+        ""
 
 class User:
     def __init__(self, username, pwd):
