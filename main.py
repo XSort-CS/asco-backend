@@ -1,19 +1,21 @@
 import os
-import subprocess
-import sys
-
-# subprocess.call([sys.executable, '-m', 'pip', 'install', "flask-CORS"])
+import json
 
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
+from flask_apscheduler import APScheduler
 
 app = Flask(__name__)
+scheduler = APScheduler()
 CORS(app)
 AUTH = "53CUR3_P455W0RD"
 
-# json soonTM
-challenges = {}
-users = {}
+with open('challenges.json') as f:
+    challenges = json.load(f)
+with open('users.json') as f:
+    users = json.loads(f)
+
+def saveData()
 
 class User:
     def __init__(self, username, pwd):
@@ -151,4 +153,4 @@ def homepage():
     return {"status": True}, 201
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='5001')
+    app.run(host='0.0.0.0', port='5001', ssl_context='adhoc')
