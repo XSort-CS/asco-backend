@@ -20,7 +20,7 @@ except:
     users = {}
 
 def saveData():
-    # return ""
+    print("[!] Saving data...")
     c_save = {}
     u_save = {}
     for key in challenges.keys():
