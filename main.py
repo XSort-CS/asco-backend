@@ -20,6 +20,7 @@ except:
     users = {}
 
 def saveData():
+    return ""
     for key, value in challenges:
         print(key, value) 
     c = {key: value.toJson() for key, value in challenges}
