@@ -163,4 +163,4 @@ def homepage():
 if __name__ == '__main__':
     scheduler.add_job(func=saveData, trigger="interval", id="save_dicts_job", minutes=5)
     scheduler.start()
-    app.run(host='0.0.0.0', port='5001', ssl_context='adhoc')
+    app.run(host='0.0.0.0', port='5001') # ssl_context='adhoc'
