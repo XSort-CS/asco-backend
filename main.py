@@ -21,9 +21,9 @@ except:
 
 def saveData():
     with open('challenges.json', 'w') as f:
-        json.dumps(challenges, f)
+        json.dump(challenges, f)
     with open('users.json', 'w') as f:
-        json.dumps(users, f)
+        json.dump(users, f)
 
 class User:
     def __init__(self, username, pwd):
