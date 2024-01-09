@@ -161,6 +161,6 @@ def homepage():
     return {"status": True}, 201
 
 if __name__ == '__main__':
-    scheduler.add_job(func=saveData, trigger="interval", id="save_dicts_job", minutes=5)
+    scheduler.add_job(func=saveData, trigger="interval", id="save_dicts_job", minutes=1)
     scheduler.start()
     app.run(host='0.0.0.0', port='5001') # ssl_context='adhoc'
