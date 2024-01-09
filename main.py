@@ -60,6 +60,7 @@ def submit_challenge():
     answer = request.json['answer']
     
     challenges[cname] = Challenge(cname.strip(), desc.strip(), answer.strip())
+    saveData()
     return {"status": True}, 201
     
 @app.route('/admin/delete_challenge', methods=['POST'])
@@ -87,7 +88,7 @@ def update_users():
     for username in users:
         user = users[username]
         user.init_cpoints()
-    
+    saveData()
     return {"status": True, "message": "Updated user cpoints dict"}
 
 @app.route('/admin/del_user', methods=['POST'])
@@ -98,6 +99,7 @@ def del_user():
     
     user = request.json.get('username')
     value = users.pop(user)
+    saveData()
     return {"message": value}
 
 @app.route('/register', methods=['POST'])
@@ -109,6 +111,7 @@ def register():
     
     users[username] = User(username, pwd)
     update_users()
+    saveData()
     return {"status": True, "message": f"User {username} registered successfully."}, 201
 
 
@@ -121,6 +124,7 @@ def validate():
     if submitted_ans.strip() == challenges[cname].answer:
         users[username].add_score(cname, points) # add a point
         return {"status": True}
+    saveData()
     return {"status": False}
     
 @app.route('/completion', methods=['POST']) # sus
@@ -128,6 +132,7 @@ def completion():
     cname = request.json['cname'] # challenge name/id
    # submitted answer from user
     username = request.json['username']
+    saveData()
     return {"status": users[username].c_points[cname]!=0}
         
 @app.route('/admin', methods=['GET', 'POST'])
@@ -141,14 +146,14 @@ def admin_panel():
     for username in users:
         user = users[username]
         udisplay.append( (user.username, f"Total score: {user.score}", f"Data: {user.c_points}") )
-
+    saveData()
     return render_template('admin.html', users = udisplay, cdisplay = cdisplay, password_required=True)
 
 @app.route('/admin/login', methods=['POST'])
 def admin_login():
     auth_password = AUTH
     password_attempt = request.json.get('password')
-
+    saveData()
     # Check if the password is correct
     if password_attempt == auth_password:
         return {"status": True}
