@@ -21,9 +21,9 @@ except:
 
 def saveData():
     with open('challenges.json', 'w') as f:
-        json.dump(challenges, f)
+        json.dump(challenges.toJson(), f)
     with open('users.json', 'w') as f:
-        json.dump(users, f)
+        json.dump(users.toJson(), f)
 
 class User:
     def __init__(self, username, pwd):
@@ -43,11 +43,27 @@ class User:
             if not challenge in self.c_points.keys():
                 self.c_points[challenge]=0
 
+    def toJson(self):
+        out = {}
+        out["username"] = self.username
+        out["password"] = self.password
+        out["score"] = self.score
+        out["c_points"] = c_points
+        return out
+
 class Challenge:
     def __init__(self, cname, desc, answer):
         self.cname = cname
         self.desc = desc
         self.answer = answer
+
+    def toJson(self):
+        out = {}
+        out["cname"] = self.cname
+        out["desc"] = self.desc
+        out["answer"] = self.answer
+        return out
+
 
 @app.route('/admin/submit_challenge', methods=['POST'])
 def submit_challenge():
