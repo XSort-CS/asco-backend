@@ -20,10 +20,12 @@ except:
     users = {}
 
 def saveData():
+    challenges = {key: value.toJson() for key, value in challenges}
+    users = {key: value.toJson() for key, value in users}
     with open('challenges.json', 'w') as f:
-        json.dump(challenges.toJson(), f)
+        json.dump(challenges, f)
     with open('users.json', 'w') as f:
-        json.dump(users.toJson(), f)
+        json.dump(users, f)
 
 class User:
     def __init__(self, username, pwd):
