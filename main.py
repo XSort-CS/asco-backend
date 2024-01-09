@@ -21,16 +21,17 @@ except:
 
 def saveData():
     # return ""
+    c_save = {}
+    u_save = {}
     for key in challenges.keys():
-        challenges[key] = challenges[key].toJson()
+        c_save[key] = challenges[key].toJson()
     for key in users.keys():
-        users[key] = users[key].toJson()
-    c = {key: value.toJson() for key, value in challenges}
-    u = {key: value.toJson() for key, value in users}
+        u_save[key] = users[key].toJson()
+
     with open('challenges.json', 'w') as f:
-        json.dump(c, f)
+        json.dump(c_save, f)
     with open('users.json', 'w') as f:
-        json.dump(u, f)
+        json.dump(u_save, f)
 
 class User:
     def __init__(self, username, pwd):
