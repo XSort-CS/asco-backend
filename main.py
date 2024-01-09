@@ -56,7 +56,7 @@ class User:
         out["username"] = self.username
         out["password"] = self.password
         out["score"] = self.score
-        out["c_points"] = c_points
+        out["c_points"] = self.c_points
         return out
 
 class Challenge:
