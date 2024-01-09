@@ -20,7 +20,8 @@ except:
     users = {}
 
 def saveData():
-    print key, value for key, value in challenges
+    for key, value in challenges:
+        print(key, value) 
     c = {key: value.toJson() for key, value in challenges}
     u = {key: value.toJson() for key, value in users}
     with open('challenges.json', 'w') as f:
