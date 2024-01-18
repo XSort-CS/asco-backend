@@ -150,7 +150,13 @@ def validate():
         return {"status": True}
     saveData()
     return {"status": False}
-    
+
+@app.route('/dragon', methods=['POST']) # sus
+def dragon():
+    submitted_ans = request.json['submit'].lower() # submitted answer from user
+    saveData()
+    return {"value": process_dragon(submitted_ans)}
+
 @app.route('/completion', methods=['POST']) # sus
 def completion():
     cname = request.json['cname'] # challenge name/id
@@ -193,3 +199,61 @@ if __name__ == '__main__':
     scheduler.add_job(func=saveData, trigger="interval", id="save_dicts_job", minutes=1)
     scheduler.start()
     app.run(host='0.0.0.0', port='5001') # ssl_context='adhoc'
+#Challenge-Specific Functions
+def process_dragon(program):
+  if(len(program)==0):
+    return "You died of nothingness"
+  d_health=1000;
+  cur_index=0;
+  loops_left=-1
+  loop_start=0;
+  i=0;
+  while(i<2001):
+    i+=1
+    if(cur_index>=len(program)):
+      if(loops_left>0):
+        return "You died of an unclosed {"
+      cur_index=0;
+    if(program[cur_index]=="}"):
+      if(loops_left==-1):
+        return "You died of an unclosed }"
+      if(loops_left>0):
+        cur_index=loop_start
+        loops_left-=1;
+        i-=1;
+        continue;
+      else:
+        cur_index=cur_index+1
+        loops_left=-1
+        i-=1;
+        continue;
+    if(program[cur_index]=='x'):
+        d_health-=1;
+        if(d_health<=0):
+          return "Dragon Defeated!!"
+    if(program[cur_index]!='s' and (i%200)%3==2 and (i%200)!=2):
+        return "You died on round {}".format(i)
+    if(program[cur_index]=="{"):
+      if(loops_left>0):
+        return "You died of a nested loop"
+      else:
+        if(cur_index+1>=len(program)):
+          return "You died of a bad loop"
+        I=cur_index+2
+        num=0
+        while(program[cur_index+1:I].isnumeric()):
+          if(I>=len(program)):
+            return "You died of a bad loop"
+          num=int(program[cur_index+1:I])
+          I+=1;
+        if(I==cur_index+2):
+          return "You died of a bad loop"
+        cur_index=I-1
+        loop_start=cur_index
+        loops_left=num-1
+        i-=1;
+        continue;
+    cur_index+=1;
+  return "You died of old age."
+
+    
