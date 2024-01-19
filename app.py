@@ -244,7 +244,7 @@ def process_dragon(program):
         if(d_health<=0):
           return "Dragon Defeated!!", True
     if(program[cur_index]!='s' and (i%200)%3==2 and (i%200)!=2):
-        return "You died on round {}".format(i), Falses
+        return "You died on round {}".format(i), False
     if(program[cur_index]=="{"):
       if(loops_left>0):
         return "You died of a nested loop", False
