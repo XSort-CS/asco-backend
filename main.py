@@ -10,14 +10,11 @@ scheduler = APScheduler()
 CORS(app)
 AUTH = "x"
 
-try:
-    with open('challenges.json', 'r') as f:
-        challenges = json.load(f)
-    with open('users.json', 'r') as f:
-        users = json.loads(f)
-except:
-    challenges = {}
-    users = {}
+with open('challenges.json', 'r') as f:
+    challenges = json.load(f)
+with open('users.json', 'r') as f:
+    users = json.load(f)
+
 
 def saveData():
     print("[!] Saving data...")
