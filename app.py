@@ -163,9 +163,15 @@ def validate():
 
 @app.route('/dragon', methods=['POST']) # sus
 def dragon():
-    submitted_ans = request.json['submit'].lower() # submitted answer from user
+    cname = request.json['cname']
+    username = request.json['username']
+    submitted_ans = request.json['submit'].lower()
+    points=request.json['points']
+    value=process_dragon(submitted_ans)
+    if(value):
+       users[username].add_score(cname, points) # submitted answer from user
     saveData()
-    return {"value": process_dragon(submitted_ans)}
+    return {"value": value}
 
 @app.route('/completion', methods=['POST']) # sus
 def completion():
@@ -202,19 +208,6 @@ def admin_login():
 @app.route('/', methods=['GET'])
 def homepage():
     return {"status": True}, 201
-
-
-@app.route('/dragon', methods=['POST']) # sus
-def dragon():
-    cname = request.json['cname']
-    username = request.json['username']
-    submitted_ans = request.json['submit'].lower()
-    points=request.json['points']
-    value=process_dragon(submitted_ans)
-    if(value):
-       users[username].add_score(cname, points) # submitted answer from user
-    saveData()
-    return {"value": value}
 
 #Challenge-Specific Functions
 def process_dragon(program):
