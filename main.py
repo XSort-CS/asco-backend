@@ -10,11 +10,11 @@ scheduler = APScheduler()
 CORS(app)
 AUTH = "x"
 
-with open('challenges.json', 'r') as f:
-    challenges = json.load(f)
-with open('users.json', 'r') as f:
-    users = json.load(f)
-
+def loadData():
+    with open('challenges.json', 'r') as f:
+        challenges = json.load(f)
+    with open('users.json', 'r') as f:
+        users = json.load(f)
 
 def saveData():
     print("[!] Saving data...")
@@ -250,6 +250,7 @@ def process_dragon(program):
 
 
 if __name__ == '__main__':
+    loadData()
     scheduler.add_job(func=saveData, trigger="interval", id="save_dicts_job", minutes=1)
     scheduler.start()
     app.run(host='0.0.0.0', port='5001') # ssl_context='adhoc'
