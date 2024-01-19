@@ -167,8 +167,10 @@ def dragon():
     username = request.json['username']
     submitted_ans = request.json['submit'].lower()
     points=request.json['points']
-    value=process_dragon(submitted_ans)
-    if(value=='Dragon Defeated!!'):
+    value, success=process_dragon(submitted_ans)
+    print(value)
+    print(successs)
+    if(success):
        users[username].add_score(cname, points) # submitted answer from user
     saveData()
     return {"value": value}
@@ -212,7 +214,7 @@ def homepage():
 #Challenge-Specific Functions
 def process_dragon(program):
   if(len(program)==0):
-    return "You died of nothingness"
+    return "You died of nothingness", False
   d_health=1000;
   cur_index=0;
   loops_left=-1
@@ -222,11 +224,11 @@ def process_dragon(program):
     i+=1
     if(cur_index>=len(program)):
       if(loops_left>0):
-        return "You died of an unclosed {"
+        return "You died of an unclosed {", False
       cur_index=0;
     if(program[cur_index]=="}"):
       if(loops_left==-1):
-        return "You died of an unclosed }"
+        return "You died of an unclosed }", False
       if(loops_left>0):
         cur_index=loop_start
         loops_left-=1;
@@ -240,31 +242,31 @@ def process_dragon(program):
     if(program[cur_index]=='x'):
         d_health-=1;
         if(d_health<=0):
-          return "Dragon Defeated!!"
+          return "Dragon Defeated!!", True
     if(program[cur_index]!='s' and (i%200)%3==2 and (i%200)!=2):
-        return "You died on round {}".format(i)
+        return "You died on round {}".format(i), Falses
     if(program[cur_index]=="{"):
       if(loops_left>0):
-        return "You died of a nested loop"
+        return "You died of a nested loop", False
       else:
         if(cur_index+1>=len(program)):
-          return "You died of a bad loop"
+          return "You died of a bad loop", False
         I=cur_index+2
         num=0
         while(program[cur_index+1:I].isnumeric()):
           if(I>=len(program)):
-            return "You died of a bad loop"
+            return "You died of a bad loop", False
           num=int(program[cur_index+1:I])
           I+=1;
         if(I==cur_index+2):
-          return "You died of a bad loop"
+          return "You died of a bad loop", False
         cur_index=I-1
         loop_start=cur_index
         loops_left=num-1
         i-=1;
         continue;
     cur_index+=1;
-  return "You died of old age."
+  return "You died of old age.", False
 
 if __name__ == '__main__':
     loadData()
