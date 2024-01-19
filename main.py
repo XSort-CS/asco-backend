@@ -8,7 +8,7 @@ from flask_apscheduler import APScheduler
 app = Flask(__name__)
 scheduler = APScheduler()
 CORS(app)
-AUTH = "53CUR3_P455W0RD"
+AUTH = "x"
 
 try:
     with open('challenges.json', 'r') as f:
@@ -250,10 +250,9 @@ def process_dragon(program):
         continue;
     cur_index+=1;
   return "You died of old age."
+
+
 if __name__ == '__main__':
     scheduler.add_job(func=saveData, trigger="interval", id="save_dicts_job", minutes=1)
     scheduler.start()
     app.run(host='0.0.0.0', port='5001') # ssl_context='adhoc'
-
-
-    
