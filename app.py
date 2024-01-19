@@ -169,7 +169,7 @@ def dragon():
     points=request.json['points']
     value, success=process_dragon(submitted_ans)
     print(value)
-    print(successs)
+    print(success)
     if(success):
        users[username].add_score(cname, points) # submitted answer from user
     saveData()
