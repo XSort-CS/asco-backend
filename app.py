@@ -163,12 +163,12 @@ def validate():
 
 @app.route('/dragon', methods=['POST']) # sus
 def dragon():
-    cname = request.json['cname']
+    cname = "dragon"
     username = request.json['username']
     submitted_ans = request.json['submit'].lower()
     points=request.json['points']
     value=process_dragon(submitted_ans)
-    if(value):
+    if(value=='Dragon Defeated!!'):
        users[username].add_score(cname, points) # submitted answer from user
     saveData()
     return {"value": value}
