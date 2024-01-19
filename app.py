@@ -1,33 +1,23 @@
 import os
 import json
-import time
 
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
+from flask_apscheduler import APScheduler
 
-users = {}
-challenges = {}
-
-AUTH = "x"
 app = Flask(__name__)
+scheduler = APScheduler()
 CORS(app)
+AUTH = "53CUR3_P455W0RD"
 
-# @app.before_first_request depricated. fix tmr.
-def loadData():
-    global users
-    global challenges
-    print("[!] Loading data...")
-    with open('challenges.json', 'r') as f:
+try:
+    with open('challenges.json') as f:
         challenges = json.load(f)
-    with open('users.json', 'r') as f:
-        users = json.load(f)
-
-    for cname in challenges.keys():
-        challenge_dict = challenges[cname]
-        challenges[cname] = Challenge(challenge_dict['cname'], challenge_dict['desc'], challenge_dict['answer'])
-    for user in users.keys():
-        user_dict = users[user]
-        users[user] = User(user_dict['username'], user_dict['password'])
+    with open('users.json') as f:
+        users = json.loads(f)
+except:
+    challenges = {}
+    users = {}
 
 def saveData():
     print("[!] Saving data...")
@@ -163,9 +153,15 @@ def validate():
 
 @app.route('/dragon', methods=['POST']) # sus
 def dragon():
-    submitted_ans = request.json['submit'].lower() # submitted answer from user
+    cname = request.json['cname']
+    username = request.json['username']
+    submitted_ans = request.json['submit'].lower()
+    points=request.json['points']
+    value=process_dragon(submitted_ans)
+    if(value):
+       users[username].add_score(cname, points) # submitted answer from user
     saveData()
-    return {"value": process_dragon(submitted_ans)}
+    return {"value": value}
 
 @app.route('/completion', methods=['POST']) # sus
 def completion():
@@ -186,12 +182,14 @@ def admin_panel():
     for username in users:
         user = users[username]
         udisplay.append( (user.username, f"Total score: {user.score}", f"Data: {user.c_points}") )
+    saveData()
     return render_template('admin.html', users = udisplay, cdisplay = cdisplay, password_required=True)
 
 @app.route('/admin/login', methods=['POST'])
 def admin_login():
     auth_password = AUTH
     password_attempt = request.json.get('password')
+    saveData()
     # Check if the password is correct
     if password_attempt == auth_password:
         return {"status": True}
@@ -202,7 +200,6 @@ def admin_login():
 @app.route('/', methods=['GET'])
 def homepage():
     return {"status": True}, 201
-
 #Challenge-Specific Functions
 def process_dragon(program):
   if(len(program)==0):
@@ -259,7 +256,10 @@ def process_dragon(program):
         continue;
     cur_index+=1;
   return "You died of old age."
-
 if __name__ == '__main__':
-    loadData()
-    app.run(host='0.0.0.0', port='5001')
+    scheduler.add_job(func=saveData, trigger="interval", id="save_dicts_job", minutes=1)
+    scheduler.start()
+    app.run(host='0.0.0.0', port='5001') # ssl_context='adhoc'
+
+
+    
