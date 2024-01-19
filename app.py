@@ -12,7 +12,7 @@ AUTH = "x"
 app = Flask(__name__)
 CORS(app)
 
-@app.before_first_request
+# @app.before_first_request depricated. fix tmr.
 def loadData():
     global users
     global challenges
